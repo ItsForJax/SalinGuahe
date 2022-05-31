@@ -21,7 +21,7 @@ class MainApp(MDApp):
                 "text": f"{i}",
                 "viewclass": "OneLineListItem",
                 "on_release": lambda x = f"{i}": self.set_item(x),
-            } for i in ["Tagalog","Bisaya","Cebuano","Ilocano"]
+            } for i in ["Tagalog","Cebuano","Ilocano","English"]
         ]
         self.menu = MDDropdownMenu(
             caller=self.screen.ids.field,
@@ -41,7 +41,7 @@ class MainApp(MDApp):
                 "text": f"{i}",
                 "viewclass": "OneLineListItem",
                 "on_release": lambda x = f"{i}": self.set_item1(x),
-            } for i in ["Tagalog","Bisaya","Cebuano","Ilocano"]
+            } for i in ["Tagalog","Cebuano","Ilocano","English"]
         ]
         self.menu1 = MDDropdownMenu(
             caller=self.screen.ids.field1,
@@ -68,17 +68,18 @@ class MainApp(MDApp):
         print("setting pressed")
 
     def translate(self):
-        con = sqlite3.connect('Salinguahe/dialect.db')
+        con = sqlite3.connect('dialect.db')
         c = con.cursor()
         From = self.screen.ids.field.text
         To = self.screen.ids.field1.text
-        Word = self.screen.ids.userinput.text
-
-        try:
-            c.execute(f"SELECT {To} FROM dialect where {From} = '{Word.upper()}'")
-            con.commit()
-        except:
-            pass
+        Word = self.screen.ids.userinput.text.upper()
+        
+        c.execute(f"""  SELECT {self.screen.ids.field1.text} 
+                            FROM dialect 
+                            where {self.screen.ids.field.text} = '{self.screen.ids.userinput.text.upper()}'""")
+        con.commit()
+        print(To,From,Word)
+        
 
         if From == "Dialect" or To == "Dialect":
             self.error_handling("Please Specify Dialect/s")
@@ -88,7 +89,11 @@ class MainApp(MDApp):
             self.error_handling("Please Input A Word")
         else:
             try:
-                self.screen.ids.output.text = c.fetchall()[0][0] 
+                if c.fetchall()[0][0] == " ":
+                    self.screen.ids.output.text = "None"
+                else:
+                    self.screen.ids.output.text = c.fetchall()[0][0] 
+                print(c.fetchall())
             except:
                 self.screen.ids.output.text = "None"
 
@@ -99,7 +104,7 @@ class MainApp(MDApp):
         self.menu.dismiss()
         
     def mic(self):
-        self.screen.ids.userinput.text = "INPUT HERE"
+        self.screen.ids.userinput.text = ""
         self.screen.ids.output.text = "OUTPUT HERE"
         self.screen.ids.field.text = "Dialect"
         self.screen.ids.field1.text = "Dialect"
