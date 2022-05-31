@@ -3,28 +3,29 @@
 import csv
 import sqlite3
 
-con = sqlite3.connect('FinalVersionSalinguahe/dialect.db')
+con = sqlite3.connect('dialect.db')
 c = con.cursor()
 
 #create table error handling included
 try:
-    c.execute('''create table dialect (Tagalog text unique, 
-                                        Bisaya text unique, 
-                                        Cebuano text unique, 
-                                        Ilocano text unique)''')
+    c.execute('''create table dialect ( Tagalog text, 
+                                        Cebuano text, 
+                                        Ilocano text,
+                                        English text)''')
 except:
     pass
 
 #open csv file
-with open('FinalVersionSalinguahe/csvdata.csv','r') as f:
+with open('dialectscsv.csv','r') as f:
     dataset = csv.reader(f)
 
-    #insert csv data to database (duplicate filter implemented)
-    for rows in dataset:
+    #insert csv data to database (no duplicate filter implemented)
+    for r in dataset:
         try:
-            c.execute("INSERT INTO dialect VALUES (?,?,?,?)",rows)
-        except:
             pass
+            #c.execute("INSERT INTO dialect VALUES (?,?,?,?)",(r[0].upper(),r[2].upper(),r[3].upper(),r[4].upper()))
+        except:
+            print("fails")
 
 con.commit()
 
@@ -35,6 +36,6 @@ def translate(From, To, Word):
     con.commit()
     print(c.fetchall())
 
-translate("Tagalog","Bisaya","TAGALOG1")
+translate("Tagalog","English","AKO")
 
 con.close()

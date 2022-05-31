@@ -110,10 +110,14 @@ MDScreen:
 
             AnchorLayout:
                 anchor_x: 'center'
-                anchor_y: 'center'  
-                FitImage:
-                    source: 'images/switch.png'
-                    size_hint:.6,1
+                anchor_y: 'center'
+                MDCard:
+                    on_release: app.switchL()
+                    md_bg_color: C("#192744")
+                    FitImage:
+                        source: 'images/switch.png'
+                        size_hint: 1, 1
+                      
 
             AnchorLayout:
                 anchor_x: 'right'
@@ -194,10 +198,10 @@ MDScreen:
                 anchor_x: 'right'  
                 anchor_y: 'center'    
                 MDIconButton:
-                    id: mic
+                    id: clear
                     icon: "images/Clear.png"
                     icon_size: "20"
-                    on_press: app.mic()
+                    on_press: app.clear()
                 
                     
                     

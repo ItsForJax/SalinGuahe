@@ -21,7 +21,7 @@ class MainApp(MDApp):
                 "text": f"{i}",
                 "viewclass": "OneLineListItem",
                 "on_release": lambda x = f"{i}": self.set_item(x),
-            } for i in ["Tagalog","Bisaya","Cebuano","Ilocano"]
+            } for i in ["Tagalog","Cebuano","Ilocano", "English"]
         ]
         self.menu = MDDropdownMenu(
             caller=self.screen.ids.field,
@@ -41,7 +41,7 @@ class MainApp(MDApp):
                 "text": f"{i}",
                 "viewclass": "OneLineListItem",
                 "on_release": lambda x = f"{i}": self.set_item1(x),
-            } for i in ["Tagalog","Bisaya","Cebuano","Ilocano"]
+            } for i in ["Tagalog","Cebuano","Ilocano","English"]
         ]
         self.menu1 = MDDropdownMenu(
             caller=self.screen.ids.field1,
@@ -68,7 +68,7 @@ class MainApp(MDApp):
         print("setting pressed")
 
     def translate(self):
-        con = sqlite3.connect('Salinguahe/dialect.db')
+        con = sqlite3.connect('dialect.db')
         c = con.cursor()
         From = self.screen.ids.field.text
         To = self.screen.ids.field1.text
@@ -98,11 +98,17 @@ class MainApp(MDApp):
         self.screen.ids.field.text = text__item
         self.menu.dismiss()
         
-    def mic(self):
-        self.screen.ids.userinput.text = "INPUT HERE"
+    def clear(self):
+        self.screen.ids.userinput.text = ""
         self.screen.ids.output.text = "OUTPUT HERE"
         self.screen.ids.field.text = "Dialect"
         self.screen.ids.field1.text = "Dialect"
+        
+    def switchL(self):
+        d1 = self.screen.ids.field.text 
+        d2 = self.screen.ids.field1.text 
+        self.screen.ids.field.text = d2
+        self.screen.ids.field1.text = d1
 
     def set_item1(self, text__item):
         self.screen.ids.field1.text = text__item
