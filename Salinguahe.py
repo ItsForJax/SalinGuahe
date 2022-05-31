@@ -68,7 +68,7 @@ class MainApp(MDApp):
         print("setting pressed")
 
     def translate(self):
-        con = sqlite3.connect('FinalVersionSalinguahe/dialect.db')
+        con = sqlite3.connect('Salinguahe/dialect.db')
         c = con.cursor()
         From = self.screen.ids.field.text
         To = self.screen.ids.field1.text
